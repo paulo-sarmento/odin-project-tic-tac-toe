@@ -12,7 +12,37 @@
   <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
 </head>
 <body>
-  
+  <div class="form">
+    <div class="wrapper">
+      <h3>Jogador 1</h3>
+      <div class="inputWrapper">
+        <label for="playerOne">Nome</label>
+        <input type="text" id="playerOne" required>
+      </div>
+    </div>
+    <div class="wrapper">
+      <h3>Jogador 2</h3>
+      <div class="inputWrapper">
+        <label for="playerTwo">Nome</label>
+        <input type="text" id="playerTwo" required>
+      </div>
+    </div>
+    <div class="wrapper buttons">
+      <button class="btn btn-game"  id="btn-game" type="submit">Iniciar Jogo</button>
+      <button class="btn btn-restart"  id="btn-restart">Restart</button>
+    </div>
+  </div>
+  <div class="grid-container">
+    <grid class="cell"></grid>
+    <grid class="cell"></grid>
+    <grid class="cell"></grid>
+    <grid class="cell"></grid>
+    <grid class="cell"></grid>
+    <grid class="cell"></grid>
+    <grid class="cell"></grid>
+    <grid class="cell"></grid>
+    <grid class="cell"></grid>
+  </div>
   <script src="assets/js/script.js"></script>
 </body>
 </html>

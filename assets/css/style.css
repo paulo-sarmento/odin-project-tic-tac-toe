@@ -2,4 +2,83 @@ body {
   font-family: 'Space Mono', monospace;
   line-height: 1.5;
   background: #fdfdfd;
+  max-width: 1600px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.form {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  margin: 5.125rem 0;
+}
+
+.form .wrapper {
+  margin: 1rem 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.buttons {
+  flex-direction: row !important;
+}
+
+.form .wrapper .inputWrapper {
+  position: relative;
+  margin-top: 15px;
+}
+
+.form .wrapper .inputWrapper input {
+  padding: 5px 10px;
+  border-radius: 6px 0 0 6px;
+  border: 1px solid #ced4da;
+  font-size: 20px;
+  width: 50%;
+}
+
+.form .wrapper .inputWrapper input:focus {
+  outline: 1px solid #0d6efd;
+}
+
+.form .wrapper .inputWrapper label {
+  position: absolute;
+  top: -13px;
+  left: 5px;
+  background: #fff;
+}
+
+.btn {
+  cursor: pointer;
+  border: none;
+  color: #fdfdfd;
+  font-size: 16px;
+  padding: 10px 30px;
+}
+
+.btn-game {
+  background: #0546A3;
+}
+
+.btn-restart {
+  background: #BFBFBD;
+}
+
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  width: 300px;
+  height: 300px;
+}
+
+.cell {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 24px;
 }
