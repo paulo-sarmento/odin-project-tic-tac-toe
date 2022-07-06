@@ -63,6 +63,23 @@ const renderChoices = (() => {
   };
 })();
 
+const boardMatriz = (() => {
+  const board = gameBoard.getboard();
+  let horizontal = [];
+  let vertical = [];
+  let sides = [];
+
+  board.forEach(item => {
+    horizontal.push(item)
+  })
+  vertical.push(board[0], board[3], board[6], board[1], board[4], board[7], board[2], board[5], board[8]);
+  sides.push(board[0], board[4], board[8], board[2], board[4], board[6])
+
+  return {
+    horizontal, vertical, sides
+  }
+})()
+
 const game = (() => {
   const btnStartGame = document.getElementById("btn-game");
   const board = gameBoard.getboard();
@@ -85,12 +102,12 @@ const game = (() => {
         renderChoices.setChoice(playerTwo, cell);
         gameTurn = "playerOne";
       }
-      if(board[0].innerText === "X" && board[3].innerText === "X" && board[6].innerText === "X") {
-        console.log("kk")
-      }
     })
   })
 
-
+  console.log(boardMatriz.horizontal);
+  console.log(boardMatriz.vertical);
+  console.log(boardMatriz.sides);
 
 })();
+
