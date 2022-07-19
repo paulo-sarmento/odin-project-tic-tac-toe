@@ -23,14 +23,12 @@ const gameBoard = (() => {
 const player = (() => {
   const playerOneInput = document.getElementById("playerOne");
   const playerTwoInput = document.getElementById("playerTwo");
-  let playerOne;
-  let playerTwo;
   const playerFactory = (name, marker) => ({ name, marker });
 
   const getPlayer = () => {
     if(playerOneInput.value !== "" && playerTwoInput.value !== "") {
-      playerOne = playerOneInput.value;
-      playerTwo = playerTwoInput.value;
+      let playerOne = playerOneInput.value;
+      let playerTwo = playerTwoInput.value;
 
 
       playerOne = playerFactory(playerOne, "X")
@@ -64,6 +62,7 @@ const renderChoices = (() => {
 
 const matriz = (() => {
   const board = gameBoard.board;
+
   const getMatriz = () => {
     let horizontal = [];
     let vertical = [];
@@ -89,63 +88,103 @@ const matriz = (() => {
 
 const game = (() => {
   const btnStartGame = document.getElementById("btn-game");
+  const playerOneScore = document.querySelector(".playerOne_score");
+  const playerTwoScore = document.querySelector(".playerTwo_score");
+  const winner = document.querySelector(".winner");
   const board = gameBoard.board;
-  let playerOne = "";
-  let playerTwo = "";
   let gameTurn = "playerOne";
-  let regExpPlayerOne = /X,X,X/;
-  let regExpPlayerTwo = /O,O,O/;
-
-  sidesMatriz = matriz.getMatriz().sides.join("");
+  let playerOne;
+  let playerTwo;
+  let horizontalMatriz = matriz.getMatriz().horizontal.toString();
+  let verticalMatriz = matriz.getMatriz().vertical.toString();
+  let sidesMatriz = matriz.getMatriz().sides.toString();
 
   btnStartGame.addEventListener("click", () => {
     playerOne = player.getPlayer().playerOne;
     playerTwo = player.getPlayer().playerTwo;
   })
 
-  board.forEach((cell, index) => {
+  board.forEach((cell, i) => {
     cell.addEventListener("click", () => {
-      if(gameTurn === "playerOne" && cell.innerText === "") {
+      if(game.gameTurn === "playerOne" && cell.innerText === "") {
         renderChoices.setChoice(playerOne, cell);
-        gameTurn = "playerTwo";
+        game.gameTurn = "playerTwo";
 
-        let horizontalMatriz = matriz.getMatriz().horizontal.toString();
-        let verticalMatriz = matriz.getMatriz().vertical.toString();
-        let sidesMatriz = matriz.getMatriz().sides.toString();
+        game.horizontalMatriz = matriz.getMatriz().horizontal.toString();
+        game.verticalMatriz = matriz.getMatriz().vertical.toString();
+        game.sidesMatriz = matriz.getMatriz().sides.toString();
 
-        if(regExpPlayerOne.test(horizontalMatriz) || regExpPlayerOne.test(verticalMatriz) || regExpPlayerOne.test(sidesMatriz)) {
-          console.log("jogador um é o vencedor");
+        console.log(`Horizontal ${game.horizontalMatriz}`);
+        console.log(`Vertical ${game.verticalMatriz}`);
+        console.log(`Sides ${game.sidesMatriz}`);
+
+        if(/X,X,X/.test(horizontalMatriz) || /X,X,X/.test(verticalMatriz) || /X,X,X/.test(sidesMatriz)) {
+          winner.innerText = `${playerOne.name} venceu`;
+          console.log("jogador um venceu");
+
+          if(Number(playerOneScore.innerText) <= 5) {
+            playerOneScore.innerText = Number(playerOneScore.innerText) + 1;
+            restart.restartBoard();
+          } else {
+            restart.restartScore();
+          }
         }
       }
-      else if (gameTurn === "playerTwo" && cell.innerText === "") {
+      else if (game.gameTurn === "playerTwo" && cell.innerText === "") {
         renderChoices.setChoice(playerTwo, cell);
-        gameTurn = "playerOne";
+        game.gameTurn = "playerOne";
 
-        let horizontalMatriz = matriz.getMatriz().horizontal.toString();
-        let verticalMatriz = matriz.getMatriz().vertical.toString();
-        let sidesMatriz = matriz.getMatriz().sides.toString();
+        game.horizontalMatriz = matriz.getMatriz().horizontal.toString();
+        game.verticalMatriz = matriz.getMatriz().vertical.toString();
+        game.sidesMatriz = matriz.getMatriz().sides.toString();
 
-        if(regExpPlayerTwo.test(horizontalMatriz) || regExpPlayerTwo.test(verticalMatriz) || regExpPlayerTwo.test(sidesMatriz)) {
-          console.log("jogador dois é o vencedor");
+        console.log(`Horizontal ${horizontalMatriz}`);
+        console.log(`Vertical ${verticalMatriz}`);
+        console.log(`Sides ${sidesMatriz}`);
+
+        if(/O,O,O/.test(horizontalMatriz) || /O,O,O/.test(verticalMatriz) || /O,O,O/.test(sidesMatriz)) {
+          winner.innerText = `${playerTwo.name} venceu`;
+          console.log("jogador dois venceu");
+
+          if(Number(playerTwoScore.innerText) <= 5) {
+            playerTwoScore.innerText = Number(playerTwoScore.innerText) + 1;
+            restart.restartBoard();
+          } else {
+            restart.restartScore();
+          }
         }
       }
     })
   })
 
   return {
-    board
+    board, gameTurn, playerOneScore, playerTwoScore, horizontalMatriz, verticalMatriz, sidesMatriz
   }
 })();
 
 const restart = (() => {
   const btnRestart = document.getElementById("btn-restart")
   const board = game.board;
+  const restartBoard = () => {
+    board.forEach(cell => {
+      cell.innerText = "";
+    })
+    game.gameTurn = "playerOne";
+  }
+  const restartScore = () => {
+    game.playerOneScore.innerText = "";
+    game.playerTwoScore.innerText = "";
+  }
 
   btnRestart.addEventListener("click", () => {
-    board.forEach(item => {
-      item.innerText = "";
+    board.forEach(cell => {
+      cell.innerText = "";
     })
+    game.gameTurn = "playerOne";
   })
 
+  return {
+    restartBoard, restartScore
+  }
 })()
 

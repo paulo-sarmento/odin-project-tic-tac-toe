@@ -14,7 +14,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: flex-end;
-  margin: 5.125rem 0;
+  margin: 1.125rem 0;
 }
 
 .form .wrapper {
@@ -74,6 +74,8 @@ body {
   grid-template-rows: repeat(3, 1fr);
   width: 300px;
   height: 300px;
+  position: absolute;
+  top: 220px;
 }
 
 .cell {
@@ -81,4 +83,42 @@ body {
   justify-content: center;
   align-items: center;
   font-size: 24px;
+}
+
+.score {
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+  border: 1px solid #ced4da;
+}
+
+.score h1 {
+  font-size: 1.375rem;
+  margin-bottom: 16px;
+}
+
+.playerOne h5,
+.playerTwo h5 {
+  font-size: 0.813rem;
+  text-transform: uppercase;
+}
+
+.info {
+  color: black;
+  align-self: self-start;
+  margin-left: 7rem;
+  margin-top: 5rem;
+}
+
+.winner {
+  text-align: center;
+}
+
+.playerOne_score,
+.playerTwo_score {
+  color: black;
+  padding: 1rem;
+  border: 1px solid #ced4da;
+  border-radius: 5px;
+  text-align: center;
 }
