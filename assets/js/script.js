@@ -68,12 +68,11 @@ const matriz = (() => {
     let vertical = [];
     let sides = [];
 
-    board.forEach(item => {
-      horizontal.push(item.innerText)
-    })
+    horizontal.push([board[0].innerText, board[1].innerText, board[2].innerText], [board[3].innerText, board[4].innerText, board[5].innerText], [board[6].innerText, board[7].innerText, board[8].innerText]);
 
-    vertical.push(board[0].innerText, board[3].innerText, board[6].innerText, board[1].innerText, board[4].innerText, board[7].innerText, board[2].innerText, board[5].innerText, board[8].innerText);
-    sides.push(board[0].innerText, board[4].innerText, board[8].innerText, board[2].innerText, board[4].innerText, board[6].innerText);
+    vertical.push([board[0].innerText, board[3].innerText, board[6].innerText], [board[1].innerText, board[4].innerText, board[7].innerText], [board[2].innerText, board[5].innerText, board[8].innerText])
+
+    sides.push([board[0].innerText, board[4].innerText, board[8].innerText], [board[2].innerText, board[4].innerText, board[6].innerText])
 
     return {
       horizontal, vertical, sides
@@ -87,6 +86,7 @@ const matriz = (() => {
 })()
 
 const game = (() => {
+  const gridContainer = document.querySelector(".grid-container");
   const btnStartGame = document.getElementById("btn-game");
   const playerOneScore = document.querySelector(".playerOne_score");
   const playerTwoScore = document.querySelector(".playerTwo_score");
@@ -95,9 +95,9 @@ const game = (() => {
   let gameTurn = "playerOne";
   let playerOne;
   let playerTwo;
-  let horizontalMatriz = matriz.getMatriz().horizontal.toString();
-  let verticalMatriz = matriz.getMatriz().vertical.toString();
-  let sidesMatriz = matriz.getMatriz().sides.toString();
+  let matrizHorizontal = matriz.getMatriz().horizontal;
+  let matrizVertical = matriz.getMatriz().vertical;
+  let matrizSides = matriz.getMatriz().sides;
 
   btnStartGame.addEventListener("click", () => {
     playerOne = player.getPlayer().playerOne;
@@ -106,59 +106,59 @@ const game = (() => {
 
   board.forEach((cell, i) => {
     cell.addEventListener("click", () => {
-      if(game.gameTurn === "playerOne" && cell.innerText === "") {
-        renderChoices.setChoice(playerOne, cell);
-        game.gameTurn = "playerTwo";
-
-        game.horizontalMatriz = matriz.getMatriz().horizontal.toString();
-        game.verticalMatriz = matriz.getMatriz().vertical.toString();
-        game.sidesMatriz = matriz.getMatriz().sides.toString();
-
-        console.log(`Horizontal ${game.horizontalMatriz}`);
-        console.log(`Vertical ${game.verticalMatriz}`);
-        console.log(`Sides ${game.sidesMatriz}`);
-
-        if(/X,X,X/.test(horizontalMatriz) || /X,X,X/.test(verticalMatriz) || /X,X,X/.test(sidesMatriz)) {
-          winner.innerText = `${playerOne.name} venceu`;
-          console.log("jogador um venceu");
-
-          if(Number(playerOneScore.innerText) <= 5) {
-            playerOneScore.innerText = Number(playerOneScore.innerText) + 1;
-            restart.restartBoard();
-          } else {
-            restart.restartScore();
+      if(playerOneScore.innerText < 5) {
+        if(game.gameTurn === "playerOne" && cell.innerText === "") {
+          renderChoices.setChoice(playerOne, cell);
+          game.gameTurn = "playerTwo";
+  
+          matrizHorizontal = matriz.getMatriz().horizontal;
+          matrizVertical = matriz.getMatriz().vertical;
+          matrizSides = matriz.getMatriz().sides;
+          
+          if(/X,X,X/.test(matrizHorizontal[0]) || /X,X,X/.test(matrizHorizontal[1]) || /X,X,X/.test(matrizHorizontal[2]) || /X,X,X/.test(matrizVertical[0]) || /X,X,X/.test(matrizVertical[1]) || /X,X,X/.test(matrizVertical[2]) || /X,X,X/.test(matrizSides[0]) || /X,X,X/.test(matrizSides[1])) {
+            winner.innerText = `${playerOne.name} venceu`;
+            gridContainer.style.pointerEvents = 'none';
+            
+            setTimeout(() => {
+              restart.restartBoard();
+              playerOneScore.innerText = Number(playerOneScore.innerText) + 1;
+              gridContainer.style.pointerEvents = 'all';
+            }, 1000);
+  
           }
         }
+      } else {
+        restart.restartScore();
       }
-      else if (game.gameTurn === "playerTwo" && cell.innerText === "") {
-        renderChoices.setChoice(playerTwo, cell);
-        game.gameTurn = "playerOne";
-
-        game.horizontalMatriz = matriz.getMatriz().horizontal.toString();
-        game.verticalMatriz = matriz.getMatriz().vertical.toString();
-        game.sidesMatriz = matriz.getMatriz().sides.toString();
-
-        console.log(`Horizontal ${horizontalMatriz}`);
-        console.log(`Vertical ${verticalMatriz}`);
-        console.log(`Sides ${sidesMatriz}`);
-
-        if(/O,O,O/.test(horizontalMatriz) || /O,O,O/.test(verticalMatriz) || /O,O,O/.test(sidesMatriz)) {
-          winner.innerText = `${playerTwo.name} venceu`;
-          console.log("jogador dois venceu");
-
-          if(Number(playerTwoScore.innerText) <= 5) {
-            playerTwoScore.innerText = Number(playerTwoScore.innerText) + 1;
-            restart.restartBoard();
-          } else {
-            restart.restartScore();
+      if(playerTwoScore.innerText < 5) {
+        if (game.gameTurn === "playerTwo" && cell.innerText === "") {
+          renderChoices.setChoice(playerTwo, cell);
+          game.gameTurn = "playerOne";
+  
+          matrizHorizontal = matriz.getMatriz().horizontal;
+          matrizVertical = matriz.getMatriz().vertical;
+          matrizSides = matriz.getMatriz().sides;
+  
+          if(/O,O,O/.test(matrizHorizontal[0]) || /O,O,O/.test(matrizHorizontal[1]) || /O,O,O/.test(matrizHorizontal[2]) || /O,O,O/.test(matrizVertical[0]) || /O,O,O/.test(matrizVertical[1]) || /O,O,O/.test(matrizVertical[2]) || /O,O,O/.test(matrizSides[0]) || /O,O,O/.test(matrizSides[1])) {
+            winner.innerText = `${playerOne.name} venceu`;
+            gridContainer.style.pointerEvents = 'none';
+            
+            setTimeout(() => {
+              playerTwoScore.innerText = Number(playerTwoScore.innerText) + 1;
+              restart.restartBoard();
+              gridContainer.style.pointerEvents = 'all';
+            }, 1000);
+  
           }
         }
+      } else {
+        restart.restartScore();
       }
     })
   })
 
   return {
-    board, gameTurn, playerOneScore, playerTwoScore, horizontalMatriz, verticalMatriz, sidesMatriz
+    board, gameTurn, playerOneScore, playerTwoScore
   }
 })();
 
